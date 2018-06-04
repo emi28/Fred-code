@@ -1,0 +1,31 @@
+#define SensorPin 0
+unsigned long int avgValue; 
+float b;
+int buf[3][10], temp; 
+int sensors[3] = {5, 1, 2}
+
+float highph;
+float lowph;
+
+PID pH_PID(&Input, &Output, &Setpoint, Kp, Ki, Kd, DIRECT); 
+PID temp_PID(&Input, &Output, &Setpoint, Kp, Ki, Kd, DIRECT); 
+PID DO_PID(&Input, &Output, &Setpoint, Kp, Ki, Kd, DIRECT); 
+
+void setup()
+{
+  pinMode(13,OUTPUT);
+  Serial.begin(9600); 
+  Serial.println("Ready");
+  Serial.println("Maximum batch pH: "); 
+  while (Serial.available() ==0){}
+  highph = Serial.parseFloat(); 
+  Serial.println(highph); 
+  
+  Serial.println("Minimum batch pH: "); 
+  while (Serial.available()==0){}
+  lowph = Serial.parseFloat();
+  Serial.println(lowph); 
+ }
+ 
+ void sort(int (&buf)[10])
+ {
